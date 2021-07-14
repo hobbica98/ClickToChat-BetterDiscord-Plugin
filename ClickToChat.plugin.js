@@ -37,7 +37,7 @@ module.exports = (() => {
             version: "0.0.1",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/Arashiryuu/crap/master/ToastIntegrated/HideUtils/HideUtils.plugin.js',
-            github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js'
+            github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js',
             description: "Click to open direct message"
         }
     }

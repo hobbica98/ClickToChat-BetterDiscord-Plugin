@@ -94,9 +94,8 @@ module.exports = (() => {
 
                 async patchConnectedUser() {
                     const VoiceUser = WebpackModules.findByDisplayName('VoiceUser');
-                    Patcher.after(VoiceUser.prototype, "render", (_, [props], returnValue) => {
-                        const user = (_.props.user)
-                        let channel = ChannelStore.getDMFromUserId(user.id)
+                    Patcher.after(VoiceUser.prototype, "render", (thisObject, [props], returnValue) => {
+                        const user = thisObject.props.user
                         returnValue.props.children.props.children.push(React.createElement('i', {
                             onClick: () => {
                                 PrivateChannelActions.openPrivateChannel(user.id)

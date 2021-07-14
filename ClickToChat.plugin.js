@@ -2,6 +2,8 @@
  * @name ClickToChat
  * @version 0.0.1
  * @description Click to open direct message
+ * @website https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin
+ * @source https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js
  */
 /*@cc_on
 @if (@_jscript)
@@ -33,6 +35,9 @@ module.exports = (() => {
             name: "ClickToChat",
             authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
             version: "0.0.1",
+            github: 'https://github.com/hobbica98',
+            github_raw: 'https://raw.githubusercontent.com/Arashiryuu/crap/master/ToastIntegrated/HideUtils/HideUtils.plugin.js',
+            github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js'
             description: "Click to open direct message"
         }
     }

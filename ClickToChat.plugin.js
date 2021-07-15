@@ -90,8 +90,7 @@ module.exports = (() => {
             return class ClickToChat extends Plugin {
 
 
-                constructor() {
-                    super();
+                onStart() {
                     this.patchConnectedUser()
                 }
 

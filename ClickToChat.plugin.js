@@ -101,7 +101,6 @@ module.exports = (() => {
 
                 async patchConnectedUser() {
                     const VoiceUser = WebpackModules.getAllByString('user')
-                    console.log({VoiceUser})
                     VoiceUser.forEach((module) => {
                         Patcher.after(module.prototype, "render", (thisObject, [props], returnValue) => {
                             const user = thisObject.props.user

@@ -100,37 +100,39 @@ module.exports = (() => {
                 }
 
                 async patchConnectedUser() {
-                    const VoiceUser = WebpackModules.getAllByString('user')
-                    VoiceUser.forEach((module) => {
-                        Patcher.after(module.prototype, "render", (thisObject, [props], returnValue) => {
-                            const user = thisObject.props.user
-                            if (!user) return returnValue
-                            if (!returnValue) return returnValue
-                            if (returnValue.props.children && !returnValue.props.children.props.children || !(returnValue.props.children.props.children.find(c => c?.props.className.includes('click-to-chat-btn')))) {
-                                returnValue.props.children.props.children.push(React.createElement('i', {
-                                    onClick: () => {
-                                        PrivateChannelActions.openPrivateChannel(user.id)
-                                    }, style: {padding: '0 10px'},
-                                    className: "fas fa-arrow-right click-to-chat-btn"
-                                }, React.createElement('svg',
+                    const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", ".list-2x9Cl9 > div", e => e?.prototype?.render?.toString().includes("renderUser"));
+                    Patcher.after(VoiceUser.component.prototype, "render", (thisObject, [props], returnValue) => {
+                        const user = thisObject.props.user
+                        if (!user) return returnValue
+                        if (!returnValue) return returnValue
+                        if (returnValue.props.children || !(returnValue.props.children.find(c => c?.props.className.includes('click-to-chat-btn')))) {
+                            returnValue.props.children = [returnValue.props.children, (React.createElement('i', {
+                                onClick: () => {
+                                    PrivateChannelActions.openPrivateChannel(user.id)
+                                }, style: {
+                                    padding: '0 10px', position: 'absolute',
+                                    right: 0,
+                                    top: '7px'
+                                },
+                                className: "fas fa-arrow-right click-to-chat-btn"
+                            }, React.createElement('svg',
+                                {
+                                    'aria-hidden': "true",
+                                    'focusable': "false",
+                                    'data-prefix': "far",
+                                    'data-icon': "arrow-to-right",
+                                    'className': "svg-inline--fa fa-arrow-to-right fa-w-14",
+                                    'role': "img",
+                                    'xmlns': "http://www.w3.org/2000/svg",
+                                    style: {width: '18px', color: '#848181'},
+                                    'viewBox': "0 0 512 512",
+                                }, React.createElement('path',
                                     {
-                                        'aria-hidden': "true",
-                                        'focusable': "false",
-                                        'data-prefix': "far",
-                                        'data-icon': "arrow-to-right",
-                                        'className': "svg-inline--fa fa-arrow-to-right fa-w-14",
-                                        'role': "img",
-                                        'xmlns': "http://www.w3.org/2000/svg",
-                                        style: {width: '18px', color: '#848181'},
-                                        'viewBox': "0 0 512 512",
-                                    }, React.createElement('path',
-                                        {
-                                            fill: "currentColor",
-                                            d: "M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288zM128 184c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z"
-                                        }, null)
-                                )));
-                            }
-                        })
+                                        fill: "currentColor",
+                                        d: "M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288zM128 184c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z"
+                                    }, null)
+                            )))];
+                        }
                     })
                 }
             }

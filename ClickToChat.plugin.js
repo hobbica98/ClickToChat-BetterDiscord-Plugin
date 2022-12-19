@@ -34,7 +34,7 @@ module.exports = (() => {
         info: {
             name: "ClickToChat",
             authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
-            version: "0.0.1",
+            version: "1.0.0",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/hobbica98/ClickToChat-BetterDiscord-Plugin/master/ClickToChat.plugin.js',
             github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js',

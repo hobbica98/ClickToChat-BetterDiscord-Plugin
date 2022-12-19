@@ -1,6 +1,6 @@
 /**
  * @name ClickToChat
- * @version 1.0.0
+ * @version 1.0.1
  * @description Click to open direct message
  * @website https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin
  * @source https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js
@@ -34,7 +34,7 @@ module.exports = (() => {
         info: {
             name: "ClickToChat",
             authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
-            version: "1.0.0",
+            version: "1.0.1",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/hobbica98/ClickToChat-BetterDiscord-Plugin/master/ClickToChat.plugin.js',
             github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js',
@@ -97,22 +97,31 @@ module.exports = (() => {
 
                 onStop() {
                     Patcher.unpatchAll();
+                    document.getElementById("customStyle-click-to-chat").remove()
                 }
 
                 async patchConnectedUser() {
+                    const style = document.createElement('style')
+                    style.innerText = '.voiceUser-3nRK-K{flex:1;}'
+                    style.id = "customStyle-click-to-chat"
+                    document.body.appendChild(style)
                     const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", ".list-2x9Cl9 > div", e => e?.prototype?.render?.toString().includes("renderUser"));
                     Patcher.after(VoiceUser.component.prototype, "render", (thisObject, [props], returnValue) => {
                         const user = thisObject.props.user
                         if (!user) return returnValue
                         if (!returnValue) return returnValue
+                        returnValue.props.style = {
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'stretch'
+                        }
                         if (returnValue.props.children || !(returnValue.props.children.find(c => c?.props.className.includes('click-to-chat-btn')))) {
                             returnValue.props.children = [returnValue.props.children, (React.createElement('i', {
                                 onClick: () => {
                                     PrivateChannelActions.openPrivateChannel(user.id)
                                 }, style: {
-                                    padding: '0 10px', position: 'absolute',
-                                    right: 0,
-                                    top: '7px'
+                                    padding: '0 10px',
+                                    flex: 0,
                                 },
                                 className: "fas fa-arrow-right click-to-chat-btn"
                             }, React.createElement('svg',

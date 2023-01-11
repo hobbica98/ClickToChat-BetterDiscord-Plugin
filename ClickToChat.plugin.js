@@ -1,6 +1,6 @@
 /**
  * @name ClickToChat
- * @version 1.0.1
+ * @version 1.0.2
  * @description Click to open direct message
  * @website https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin
  * @source https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js
@@ -34,7 +34,7 @@ module.exports = (() => {
         info: {
             name: "ClickToChat",
             authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
-            version: "1.0.1",
+            version: "1.0.2",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/hobbica98/ClickToChat-BetterDiscord-Plugin/master/ClickToChat.plugin.js',
             github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js',
@@ -102,7 +102,7 @@ module.exports = (() => {
 
                 async patchConnectedUser() {
                     const style = document.createElement('style')
-                    style.innerText = '.voiceUser-3nRK-K{flex:1;}'
+                    style.innerText = '.voiceUser-3nRK-K{width:80%;}'
                     style.id = "customStyle-click-to-chat"
                     document.body.appendChild(style)
                     const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", ".list-2x9Cl9 > div", e => e?.prototype?.render?.toString().includes("renderUser"));

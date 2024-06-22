@@ -131,7 +131,7 @@ module.exports = (() => {
                         }, React.createElement('svg',
                                 {
                                     'xmlns': "http://www.w3.org/2000/svg",
-                                    style: {width: '26px', color: '#848181'},
+                                    style: {width: '26px', color: 'var(--channels-default)'},
                                     'viewBox': "0 0 512 512",    
                                 }, React.createElement('path',
                                     {

@@ -33,7 +33,7 @@ module.exports = (() => {
     const config = {
         info: {
             name: "ClickToChat",
-            authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}, {name: "nicola02nb", discord_id: "257900031351193600", github_username: "nicola02nb"}],
+            authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
             version: "1.0.4",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/hobbica98/ClickToChat-BetterDiscord-Plugin/master/ClickToChat.plugin.js',

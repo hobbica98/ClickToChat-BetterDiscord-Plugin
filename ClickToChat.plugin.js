@@ -123,7 +123,7 @@ module.exports = (() => {
                             },
                             style: {
                                 marginRight: '1px', // Add some margin to separate from the existing element
-                                width: '26px',
+                                width: '28px',
                                 height: '32px'
                             },
                             className: "click-to-chat-btn bd-button",

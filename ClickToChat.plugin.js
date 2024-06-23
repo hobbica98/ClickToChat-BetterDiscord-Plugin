@@ -92,6 +92,7 @@ module.exports = (() => {
 
                 onStart() {
                     this.patchConnectedUser()
+                    this.userId = BdApi.findModuleByProps('getCurrentUser').getCurrentUser().id // Loading current user ID
                 }
 
                 onStop() {
@@ -114,6 +115,15 @@ module.exports = (() => {
                             alignItems: 'center',
                             justifyContent: 'stretch'
                         }
+
+                        // Checking if patching user is current user ID
+                        let disabledButtonClass = ""
+                        let disabledStatus = false
+                        console.log(user.id+" "+this.userId)
+                        if(user.id == this.userId){
+                            disabledButtonClass = " bd-button-disabled"
+                            disabledStatus = true
+                        }
                         
                         const chatButton = React.createElement('div', {
                             className: "bd-controls bd-addon-controls"
@@ -126,8 +136,8 @@ module.exports = (() => {
                                 width: '28px',
                                 height: '32px'
                             },
-                            className: "click-to-chat-btn bd-button",
-                            'aria-label': "Chat"
+                            className: "click-to-chat-btn bd-button bd-button-blank bd-button-color-brand bd-button-grow"+disabledButtonClass,
+                            disabled: disabledStatus
                         }, React.createElement('svg',
                                 {
                                     'xmlns': "http://www.w3.org/2000/svg",

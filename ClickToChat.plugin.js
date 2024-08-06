@@ -102,10 +102,10 @@ module.exports = (() => {
 
                 async patchConnectedUser() {
                     const style = document.createElement('style')
-                    style.innerText = '.voiceUser_cdc675{width:100%;} .list_a478e5{padding-left:20px;}'
+                    style.innerText = "div[class*='voiceUser_']{width:100%;} div[class*='listDefault_']{padding-left:20px;}"
                     style.id = "customStyle-click-to-chat"
                     document.body.appendChild(style)
-                    const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", ".list_a478e5 > div", e => e?.prototype?.render?.toString().includes("renderUser"));
+                    const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", "div[class*='listDefault_'] > div", e => e?.prototype?.render?.toString().includes("renderUser"));
                     Patcher.after(VoiceUser.component.prototype, "render", (thisObject, [props], returnValue) => {
                         const user = thisObject.props.user
                         if (!user || !returnValue) return returnValue

@@ -1,6 +1,6 @@
 /**
  * @name ClickToChat
- * @version 1.0.3
+ * @version 1.0.4
  * @description Click to open direct message
  * @website https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin
  * @source https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js
@@ -34,7 +34,7 @@ module.exports = (() => {
         info: {
             name: "ClickToChat",
             authors: [{name: "hobbica", discord_id: "83806103388815360", github_username: "hobbica98"}],
-            version: "1.0.3",
+            version: "1.0.4",
             github: 'https://github.com/hobbica98',
             github_raw: 'https://raw.githubusercontent.com/hobbica98/ClickToChat-BetterDiscord-Plugin/master/ClickToChat.plugin.js',
             github_source: 'https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin/blob/master/ClickToChat.plugin.js',
@@ -82,10 +82,9 @@ module.exports = (() => {
         }
     } : (([Plugin, Api]) => {
         const plugin = (Plugin, Api) => {
-            const {WebpackModules, DiscordModules, Patcher} = Api;
+            const {DiscordModules, Patcher} = Api;
             const {
-                React,
-                ChannelStore, PrivateChannelActions,
+                React, PrivateChannelActions,
 
             } = DiscordModules;
             return class ClickToChat extends Plugin {
@@ -93,6 +92,7 @@ module.exports = (() => {
 
                 onStart() {
                     this.patchConnectedUser()
+                    this.userId = BdApi.findModuleByProps('getCurrentUser').getCurrentUser().id // Loading current user ID
                 }
 
                 onStop() {
@@ -102,52 +102,63 @@ module.exports = (() => {
 
                 async patchConnectedUser() {
                     const style = document.createElement('style')
-                    style.innerText = '.voiceUser-3nRK-K{width:80%;} .layer-2BGhQ8{margin-left:20px;}'
+                    style.innerText = "div[class*='voiceUser_']{width:100%;} div[class*='listDefault_']{padding-left:20px;}"
                     style.id = "customStyle-click-to-chat"
                     document.body.appendChild(style)
-                    const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", ".list-2x9Cl9 > div", e => e?.prototype?.render?.toString().includes("renderUser"));
+                    const VoiceUser = await ZLibrary.ReactComponents.getComponent("VoiceUsers", "div[class*='listDefault_'] > div", e => e?.prototype?.render?.toString().includes("renderUser"));
                     Patcher.after(VoiceUser.component.prototype, "render", (thisObject, [props], returnValue) => {
                         const user = thisObject.props.user
-                        if (!user) return returnValue
-                        if (!returnValue) return returnValue
+                        if (!user || !returnValue) return returnValue
+                        
                         returnValue.props.style = {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'stretch'
                         }
-                        if (returnValue.props.children || !(returnValue.props.children.find(c => c?.props.className.includes('click-to-chat-btn')))) {
-                            returnValue.props.children = [returnValue.props.children, (React.createElement('i', {
-                                onClick: () => {
-                                    PrivateChannelActions.openPrivateChannel(user.id)
-                                }, style: {
-                                    padding: '0 10px',
-                                    flex: 0,
-                                    zIndex:1003
-                                },
-                                className: "fas fa-arrow-right click-to-chat-btn"
-                            }, React.createElement('svg',
+
+                        // Checking if patching user is current user ID
+                        let disabledButtonClass = ""
+                        let disabledStatus = false
+                        if(user.id === this.userId){
+                            disabledButtonClass = " bd-button-disabled"
+                            disabledStatus = true
+                        }
+                        
+                        const chatButton = React.createElement('div', {
+                            className: "bd-controls bd-addon-controls"
+                        }, React.createElement('button', {
+                            onClick: () => {
+                                PrivateChannelActions.openPrivateChannel(user.id)
+                            },
+                            style: {
+                                marginRight: '1px', // Add some margin to separate from the existing element
+                                width: '28px',
+                                height: '32px'
+                            },
+                            className: "click-to-chat-btn bd-button bd-button-blank bd-button-color-brand bd-button-grow"+disabledButtonClass,
+                            disabled: disabledStatus
+                        }, React.createElement('svg',
                                 {
-                                    'aria-hidden': "true",
-                                    'focusable': "false",
-                                    'data-prefix': "far",
-                                    'data-icon': "arrow-to-right",
-                                    'className': "svg-inline--fa fa-arrow-to-right fa-w-14",
-                                    'role': "img",
                                     'xmlns': "http://www.w3.org/2000/svg",
-                                    style: {width: '18px', color: '#848181'},
-                                    'viewBox': "0 0 512 512",
+                                    style: {width: '26px', color: 'var(--channels-default)'},
+                                    'viewBox': "0 0 512 512",    
                                 }, React.createElement('path',
                                     {
                                         fill: "currentColor",
                                         d: "M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288zM128 184c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z"
                                     }, null)
-                            )))];
-                        }
+                        )))
+                
+                        // Check if children is an array, if not, make it an array
+                        returnValue.props.children = Array.isArray(returnValue.props.children) 
+                            ? returnValue.props.children 
+                            : [returnValue.props.children];
+                
+                        // Insert the chat button at the beginning of the children array
+                        returnValue.props.children.unshift(chatButton);
                     })
                 }
             }
-
-
         };
         return plugin(Plugin, Api);
     })(global.ZeresPluginLibrary.buildPlugin(config));

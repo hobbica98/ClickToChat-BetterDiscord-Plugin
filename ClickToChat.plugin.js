@@ -119,8 +119,7 @@ module.exports = (() => {
                         // Checking if patching user is current user ID
                         let disabledButtonClass = ""
                         let disabledStatus = false
-                        console.log(user.id+" "+this.userId)
-                        if(user.id == this.userId){
+                        if(user.id === this.userId){
                             disabledButtonClass = " bd-button-disabled"
                             disabledStatus = true
                         }

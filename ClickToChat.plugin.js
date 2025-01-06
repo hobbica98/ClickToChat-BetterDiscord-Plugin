@@ -1,6 +1,6 @@
 /**
 * @name ClickToChat
-* @version 1.1.1
+* @version 1.1.2
 * @description Click to open direct message
 * @author hobbica
 * @authorId 83806103388815360

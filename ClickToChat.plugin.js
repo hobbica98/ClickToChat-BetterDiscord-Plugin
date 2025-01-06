@@ -1,6 +1,6 @@
 /**
 * @name ClickToChat
-* @version 1.1.0
+* @version 1.1.1
 * @description Click to open direct message
 * @author hobbica
 * @authorId 83806103388815360
@@ -34,7 +34,9 @@
 @else@*/
 
 const { Webpack, Patcher, React } = BdApi;
-const openPrivateChannel = Webpack.getByKeys("openPrivateChannel")?.openPrivateChannel;
+const getConnectedUser = Webpack.getByKeys("getCurrentUser");
+const openPrivateChannel = Webpack.getByKeys("openPrivateChannel");
+const VoiceUsers = Webpack.getByKeys('DecoratedComponent').DecoratedComponent;
 
 var console = {};
 
@@ -49,7 +51,7 @@ module.exports = class ClickToChat {
         BdApi.DOM.addStyle(this.meta.name, `div[class^='voiceUser_']{width:100%;} 
             div[class^='list_'][class*='listDefault_']{padding-left:20px;}`);
         this.patchConnectedUser()
-        this.userId = BdApi.findModuleByProps('getCurrentUser').getCurrentUser().id // Loading current user ID
+        this.userId = getConnectedUser.getCurrentUser().id // Loading current user ID
     }
 
     stop() {
@@ -59,7 +61,7 @@ module.exports = class ClickToChat {
     }
 
     async patchConnectedUser() {
-        const VoiceUsers = Webpack.getModule((a, b) => b.id == 262317).ZP.DecoratedComponent;
+
         Patcher.after(this.meta.name, VoiceUsers.prototype, "render", (thisObject, [props], returnValue) => {
             const user = thisObject.props.user
             if (!user || !returnValue) return returnValue

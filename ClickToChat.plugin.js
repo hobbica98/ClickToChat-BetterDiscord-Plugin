@@ -1,6 +1,6 @@
 /**
 * @name ClickToChat
-* @version 1.1.3
+* @version 1.1.2
 * @description Click to open direct message
 * @author hobbica
 * @authorId 83806103388815360
@@ -43,22 +43,21 @@ var console = {};
 module.exports = class ClickToChat {
     constructor(meta) {
         this.meta = meta;
-        this.BdApi = new BdApi(this.meta.name);
-        console = this.BdApi.Logger;
+        this.api = new BdApi(this.meta.name);
+        console = this.api.Logger;
     }
 
     start() {
-        this.BdApi.DOM.addStyle(this.meta.name, `div[class^='voiceUser_']{width:100%;} 
-            div[class^='list_'][class*='listDefault_']{padding-left:20px;}
-            .click-to-chat-btn{marginRight:1px;width:32px;height:32px;}
-            div[class^='list_'][class*='collapsed_'] .click-to-chat-btn{display:none;}`);
-        this.patchConnectedUser();
+        BdApi.DOM.addStyle(this.meta.name, `div[class^='voiceUser_']{width:100%;} 
+            div[class^='list_'][class*='listDefault_']{padding-left:20px;}`);
+        this.patchConnectedUser()
         this.userId = getConnectedUser.getCurrentUser().id // Loading current user ID
     }
 
     stop() {
         Patcher.unpatchAll(this.meta.name);
-        this.BdApi.DOM.removeStyle();
+        BdApi.DOM.removeStyle(this.meta.name, `div[class^='voiceUser_']{width:100%;} 
+            div[class^='list_'][class*='listDefault_']{padding-left:20px;}`);
     }
 
     async patchConnectedUser() {
@@ -86,6 +85,11 @@ module.exports = class ClickToChat {
             }, React.createElement('button', {
                 onClick: () => {
                     openPrivateChannel.openPrivateChannel(user.id)
+                },
+                style: {
+                    marginRight: '1px', // Add some margin to separate from the existing element
+                    width: '28px',
+                    height: '32px'
                 },
                 className: "click-to-chat-btn bd-button bd-button-blank bd-button-color-brand bd-button-grow" + disabledButtonClass,
                 disabled: disabledStatus

@@ -1,8 +1,8 @@
 /**
 * @name ClickToChat
-* @version 1.1.4
+* @version 1.1.5
 * @description Click to open direct message
-* @author hobbica
+* @author hobbica, nicola02nb
 * @authorId 83806103388815360
 * @authorLink https://github.com/hobbica98
 * @website https://github.com/hobbica98/ClickToChat-BetterDiscord-Plugin
@@ -49,7 +49,7 @@ module.exports = class ClickToChat {
                 className: "bd-controls bd-addon-controls"
             }, React.createElement('button', {
                 onClick: () => {
-                    openPrivateChannel.openPrivateChannel(userId)
+                    openPrivateChannel.openPrivateChannel({recipientIds: userId})
                 },
                 className: "click-to-chat-btn bd-button bd-button-blank bd-button-color-brand bd-button-grow" + disabledButtonClass,
                 disabled: disabledStatus
